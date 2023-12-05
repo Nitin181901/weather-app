@@ -78,6 +78,17 @@ h1 {
   color: #f8f8f8
 }
 
+.app .error-text{
+  font-size: 3rem;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+}
+
 ::placeholder {
   color: #f8f8f8;
 }
