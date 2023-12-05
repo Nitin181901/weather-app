@@ -5,6 +5,7 @@ const SearchInput = ({
   setLocation,
   searchLocation,
   placeholder,
+  error,
 }) => (
   <div className="search">
     <input

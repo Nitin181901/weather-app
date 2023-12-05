@@ -7,15 +7,25 @@ import WeatherDetails from "./components/WeatherDetails";
 function App() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
+  const [error, setError] = useState("");
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=895284fb2d2c50a520ea537456963d9c`;
 
   const searchLocation = (event) => {
     if (event.key === "Enter") {
-      axios.get(url).then((response) => {
-        setData(response.data);
-        console.log(response.data);
-      });
+      axios
+        .get(url)
+        .then((response) => {
+          setData(response.data);
+          setError("");
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            setError("Location not found");
+          } else {
+            setError("An error occurred. Please try again.");
+          }
+        });
       setLocation("");
     }
   };
@@ -27,10 +37,17 @@ function App() {
         setLocation={setLocation}
         searchLocation={searchLocation}
         placeholder="Enter Location"
+        error={error}
       ></SearchInput>
       <div className="container">
-      <WeatherDisplay data={data}></WeatherDisplay>
-      <WeatherDetails data={data}></WeatherDetails>
+        {error ? (
+          <p className="error-text">{error}</p>
+        ) : (
+          <>
+            <WeatherDisplay data={data} />
+            <WeatherDetails data={data} />
+          </>
+        )}
       </div>
     </div>
   );
