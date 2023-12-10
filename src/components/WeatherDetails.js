@@ -1,4 +1,3 @@
-// WeatherDetails.js
 import React from "react";
 
 const WeatherDetails = ({ data }) => (
