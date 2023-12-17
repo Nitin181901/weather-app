@@ -3,6 +3,7 @@ import axios from "axios";
 import SearchInput from "./components/SearchInput";
 import WeatherDisplay from "./components/WeatherDisplay";
 import WeatherDetails from "./components/WeatherDetails";
+import HistoryDisplay from "./components/HistoryDisplay";
 
 function App() {
   const [data, setData] = useState({});
@@ -22,37 +23,38 @@ function App() {
     }
   }, []);
 
-  const fetchData = (searchLocation) => {
-    // Check if the location is empty
-    if (!searchLocation.trim()) {
-      setError("No input given");
-      return;
-    }
+const fetchData = (searchLocation) => {
+  if (!searchLocation.trim()) {
+    setError("No input given");
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&units=metric&appid=895284fb2d2c50a520ea537456963d9c`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&units=metric&appid=895284fb2d2c50a520ea537456963d9c`;
 
-    axios
-      .get(url)
-      .then((response) => {
-        setData(response.data);
-        setError("");
-        updateSearchHistory(searchLocation, response.data.main.temp);
-        localStorage.setItem("lastSearchedLocation", searchLocation);
-        localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 404) {
-          setError("Location not found");
-        } else {
-          setError("An error occurred. Please try again.");
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  axios
+    .get(url)
+    .then((response) => {
+      setData(response.data);
+      setError("");
+      updateSearchHistory(searchLocation, response.data.main.temp);
+      localStorage.setItem("lastSearchedLocation", searchLocation);
+      localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+      setLocation("");
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 404) {
+        setError("Location not found");
+      } else {
+        setError("An error occurred. Please try again.");
+      }
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+};
+
 
   const updateSearchHistory = (searchLocation, temperature) => {
     const updatedHistory = [
@@ -85,17 +87,7 @@ function App() {
           <p className="error-text">{error}</p>
         ) : (
           <>
-            <div className="history">
-              <h2>Search History</h2>
-              <ul>
-                {searchHistory.map((item, index) => (
-                  <li key={index}>
-                    <span>{item.location}</span> -{" "}
-                    <span>{item.temperature.toFixed()}°F</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <HistoryDisplay searchHistory={searchHistory} />
             <WeatherDisplay data={data} />
             <WeatherDetails data={data} />
           </>
