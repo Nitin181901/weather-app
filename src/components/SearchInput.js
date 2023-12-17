@@ -15,6 +15,9 @@ const SearchInput = ({
       placeholder={placeholder}
       type="text"
     />
+    <button onClick={() => searchLocation({ key: "Enter" })} type="button">
+      Submit
+    </button>
   </div>
 );
 

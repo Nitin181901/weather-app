@@ -18,14 +18,6 @@ const WeatherDetails = ({ data }) => (
         </>
       ) : null}
     </div>
-    <div className="wind">
-      {data.wind ? (
-        <>
-          <p className="bold">{data.wind.speed.toFixed()} MPH</p>
-          <p>Wind Speed</p>
-        </>
-      ) : null}
-    </div>
   </div>
 );
 
