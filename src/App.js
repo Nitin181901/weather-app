@@ -9,10 +9,9 @@ function App() {
   const [location, setLocation] = useState("");
   const [error, setError] = useState("");
   const [searchHistory, setSearchHistory] = useState([]);
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Load data and search history from local storage on component mount
     const savedLocation = localStorage.getItem("lastSearchedLocation");
     const savedSearchHistory =
       JSON.parse(localStorage.getItem("searchHistory")) || [];
@@ -24,7 +23,13 @@ function App() {
   }, []);
 
   const fetchData = (searchLocation) => {
-    setLoading(true); // Set loading to true when starting the fetch
+    // Check if the location is empty
+    if (!searchLocation.trim()) {
+      setError("No input given");
+      return;
+    }
+
+    setLoading(true);
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&units=metric&appid=895284fb2d2c50a520ea537456963d9c`;
 
@@ -34,7 +39,6 @@ function App() {
         setData(response.data);
         setError("");
         updateSearchHistory(searchLocation, response.data.main.temp);
-        // Save the last searched location and updated search history to local storage
         localStorage.setItem("lastSearchedLocation", searchLocation);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
       })
@@ -46,7 +50,7 @@ function App() {
         }
       })
       .finally(() => {
-        setLoading(false); // Set loading to false when the fetch is complete
+        setLoading(false);
       });
   };
 
@@ -56,7 +60,6 @@ function App() {
       ...searchHistory,
     ];
     setSearchHistory(updatedHistory);
-    // Save the updated search history to local storage
     localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
   };
 
@@ -74,7 +77,7 @@ function App() {
         searchLocation={searchLocation}
         placeholder="Enter Location"
         error={error}
-      ></SearchInput>
+      />
       <div className="container">
         {loading ? (
           <p>Loading...</p>
