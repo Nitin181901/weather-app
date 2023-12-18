@@ -4,6 +4,7 @@ import SearchInput from "./components/SearchInput";
 import WeatherDisplay from "./components/WeatherDisplay";
 import WeatherDetails from "./components/WeatherDetails";
 import HistoryDisplay from "./components/HistoryDisplay";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
   const [data, setData] = useState({});
@@ -82,7 +83,7 @@ const fetchData = (searchLocation) => {
       />
       <div className="container">
         {loading ? (
-          <p>Loading...</p>
+          <LoadingSpinner />
         ) : error ? (
           <p className="error-text">{error}</p>
         ) : (

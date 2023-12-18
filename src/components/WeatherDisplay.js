@@ -2,7 +2,6 @@ import React from "react";
 
 const WeatherDisplay = ({ data }) => {
   const getWeatherIconUrl = (iconCode) => {
-    // Replace "openweathermap.org" with the actual domain of your icon provider
     return `http://openweathermap.org/img/wn/${iconCode}.png`;
   };
 
