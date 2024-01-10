@@ -8,7 +8,7 @@ const HistoryDisplay = ({ searchHistory }) => {
         {searchHistory.map((item, index) => (
           <li key={index}>
             <span>{item.location}</span> -{" "}
-            <span>{item.temperature.toFixed()}°F</span>
+            <span>{item.temperature.toFixed()}°C</span>
           </li>
         ))}
       </ul>
